@@ -57,4 +57,4 @@ jobs:
       - name: Release Container Runtime
         run: |
           make container-runtime-build
-          make container-runtime-snapshot-push TAG=${{ github.sha }}
+          make container-runtime-snapshot-push TAG=${{ GITHUB_SHA::8 }}
