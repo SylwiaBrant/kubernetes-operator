@@ -1,8 +1,7 @@
 name: Publish nightly snapshot
 on:
-  push:
-    branches:
-      - master
+  schedule:
+    - cron: '30 * * * *'
 jobs:
   publish-image:
     name: Publish nightly snapshot
@@ -58,4 +57,4 @@ jobs:
       - name: Release Container Runtime
         run: |
           make container-runtime-build
-          make container-runtime-snapshot-push
+          make container-runtime-snapshot-push TAG=${{ github.sha }}
