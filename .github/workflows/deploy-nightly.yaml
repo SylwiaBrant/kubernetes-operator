@@ -1,7 +1,7 @@
 name: Publish nightly snapshot
 on:
   schedule:
-    - cron: '30 * * * *'
+    - cron: '*/10 * * * *'
 jobs:
   publish-image:
     name: Publish nightly snapshot
@@ -18,11 +18,7 @@ jobs:
 
       - name: Release Container Runtime
         run: |
-          echo "SHORT_SHA=$(${{ github.sha }} | cut -c1-8)" >> $GITHUB_ENV
-          echo ${{ env.SHORT_SHA }}
-          echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo ${{ env.SHORT_SHA }}
-          echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+          echo "SHORT_SHA='echo ${{ github.sha }} | cut -c1-8'" >> $GITHUB_ENV
           echo ${{ env.SHORT_SHA }}
           make container-runtime-build
           make container-runtime-snapshot-push TAG=${{ env.SHORT_SHA }}
