@@ -18,10 +18,9 @@ jobs:
 
       - name: Release Container Runtime
         run: |
-          echo "SHORT_SHA = ${{ github.sha:0:8 }} >> $GITHUB_ENV
-          echo ${{ env.SHORT_SHA }}
-          echo "SHORTER_SHA = ${{ github.sha }} >> $GITHUB_ENV
-          echo "SHORTEST_SHA = ${{SHORTER_SHA:0:8}} >> $GITHUB_ENV
-          echo ${{ env.SHORT_SHA }}
+          echo "SHA = ${{ github.sha }} >> $GITHUB_ENV
+          echo ${{ env.SHA }}
+          echo "SHORTER_SHA = ${{ SHA:8 }} >> $GITHUB_ENV
+          echo ${{ env.SHORTER_SHA }}
           make container-runtime-build
-          make container-runtime-snapshot-push TAG=${{ github.sha:0:8 }}
+          make container-runtime-snapshot-push TAG=${{ env.SHORTER_SHA }}
