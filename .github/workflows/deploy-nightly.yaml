@@ -16,7 +16,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Release Container Runtime
+      - name: Prepare image tag
         run: |
           echo "SHORTER_SHA=$(${{ github.sha }} | cut -c1-8)" >> $GITHUB_ENV
           echo ${{ env.SHORTER_SHA }}
@@ -24,5 +24,7 @@ jobs:
           echo ${{ env.SHORTER_SHA }}
           echo "SHORTER_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo ${{ env.SHORTER_SHA }}
+      - name: Release Container Runtime
+        run: |
           make container-runtime-build
           make container-runtime-snapshot-push TAG=${{ env.SHORTER_SHA }}
