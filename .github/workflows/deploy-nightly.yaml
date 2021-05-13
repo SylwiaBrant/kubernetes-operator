@@ -28,6 +28,14 @@ jobs:
       - name: Ensure Golang runtime dependencies
         run: make go-dependencies
 
+      - name: Prepare environment for e2e
+        run: |
+          sudo apt-get update
+          sudo apt-get install socat
+          sudo mkdir -p $HOME/.kube $HOME/.minikube
+          sudo chown -R $USER $HOME/.kube $HOME/.minikube
+          make minikube-start MINIKUBE_DRIVER='docker' CPUS_NUMBER=2
+
       - name: Jenkins Operator - Helm Chart tests
         run: |
           make minikube-start
