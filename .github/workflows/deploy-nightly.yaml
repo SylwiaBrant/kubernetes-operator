@@ -30,6 +30,7 @@ jobs:
 
       - name: Jenkins Operator - Helm Chart tests
         run: |
+          make minikube-start
           eval $(bin/minikube docker-env)
 
       - name: Login to DockerHub
