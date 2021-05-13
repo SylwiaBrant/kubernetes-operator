@@ -37,8 +37,7 @@ jobs:
           make minikube-start MINIKUBE_DRIVER='docker' CPUS_NUMBER=2
 
       - name: Jenkins Operator - Helm Chart tests
-        run: |
-          eval $(bin/minikube docker-env)
+        run: eval $(bin/minikube docker-env)
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
