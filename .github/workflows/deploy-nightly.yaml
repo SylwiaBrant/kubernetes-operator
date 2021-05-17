@@ -1,7 +1,7 @@
 name: Publish nightly snapshot
 on:
   schedule:
-    - cron: '*/10 * * * *'
+    - cron: '*/30 * * * *'
 jobs:
   publish-image:
     name: Publish nightly snapshot
@@ -28,6 +28,9 @@ jobs:
       - name: Ensure Golang runtime dependencies
         run: make go-dependencies
 
+      - name: Verify code formatting
+        run: make verify
+
       - name: Prepare environment for e2e
         run: |
           sudo apt-get update
@@ -37,7 +40,10 @@ jobs:
           make minikube-start MINIKUBE_DRIVER='docker' CPUS_NUMBER=2
 
       - name: Jenkins Operator - Helm Chart tests
-        run: eval $(bin/minikube docker-env)
+        run: |
+          make helm-lint
+          eval $(bin/minikube docker-env)
+          make helm-e2e E2E_TEST_ARGS='-ginkgo.v'
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -45,10 +51,6 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Prepare image tag
-        run: echo "SHORTER_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-
       - name: Release Container Runtime
         run: |
-          make container-runtime-build
-          make container-runtime-snapshot-push TAG=${{ env.SHORTER_SHA }}
+          make container-runtime-snapshot-push
