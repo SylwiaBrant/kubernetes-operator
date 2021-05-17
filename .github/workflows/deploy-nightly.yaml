@@ -1,7 +1,7 @@
 name: Publish nightly snapshot
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '0 2 * * *'
 jobs:
   publish-image:
     name: Publish nightly snapshot
@@ -51,6 +51,9 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
+      - name: Prepare image tag
+        run: echo "SHORTER_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Release Container Runtime
         run: |
-          make container-runtime-snapshot-push
+          make container-runtime-snapshot-push TAG=${{ env.SHORTER_SHA }}
