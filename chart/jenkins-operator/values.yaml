@@ -78,7 +78,7 @@ jenkins:
   #   version: 0.15
   basePlugins:
     - name: kubernetes
-      version: "1.29.2"
+      version: "1.29.4"
     - name: workflow-job
       version: "2.40"
     - name: workflow-aggregator
@@ -88,7 +88,7 @@ jenkins:
     - name: job-dsl
       version: "1.77"
     - name: configuration-as-code
-      version: "1.47"
+      version: "1.50"
     - name: kubernetes-credentials-provider
       version: "0.15"
 
