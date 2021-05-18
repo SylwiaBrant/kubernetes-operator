@@ -1,7 +1,6 @@
 name: Publish nightly snapshot
 on:
-  schedule:
-    - cron: '*/30 * * * *'
+
 jobs:
   publish-image:
     name: Publish nightly snapshot
