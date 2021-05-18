@@ -227,10 +227,11 @@ container-runtime-push: ## Push the container
 	$(CONTAINER_RUNTIME_COMMAND) push $(DOCKER_ORGANIZATION)/$(DOCKER_REGISTRY):$(BUILD_TAG) $(CONTAINER_RUNTIME_EXTRA_ARGS)
 
 .PHONY: container-runtime-snapshot-push
+GITCOMMIT = $(shell git rev-parse --short HEAD)
 container-runtime-snapshot-push: container-runtime-build
 	@echo "+ $@"
-	$(CONTAINER_RUNTIME_COMMAND) tag $(IMAGE_NAME) $(DOCKER_ORGANIZATION)/$(DOCKER_REGISTRY):$(TAG) $(CONTAINER_RUNTIME_EXTRA_ARGS)
-	$(CONTAINER_RUNTIME_COMMAND) push $(DOCKER_ORGANIZATION)/$(DOCKER_REGISTRY):$(TAG) $(CONTAINER_RUNTIME_EXTRA_ARGS)
+	$(CONTAINER_RUNTIME_COMMAND) tag $(IMAGE_NAME) $(DOCKER_ORGANIZATION)/$(DOCKER_REGISTRY):$(GITCOMMIT) $(CONTAINER_RUNTIME_EXTRA_ARGS)
+	$(CONTAINER_RUNTIME_COMMAND) push $(DOCKER_ORGANIZATION)/$(DOCKER_REGISTRY):$(GITCOMMIT) $(CONTAINER_RUNTIME_EXTRA_ARGS)
 
 .PHONY: container-runtime-release-version
 container-runtime-release-version: ## Release image with version tag (in addition to build tag)
