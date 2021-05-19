@@ -95,10 +95,9 @@ e2e: deepcopy-gen manifests ## Runs e2e tests, you can use EXTRA_ARGS
 		-jenkins-api-hostname=$(JENKINS_API_HOSTNAME) -jenkins-api-port=$(JENKINS_API_PORT) -jenkins-api-use-nodeport=$(JENKINS_API_USE_NODEPORT) $(E2E_TEST_ARGS)
 
 .PHONY: helm-e2e
-IMAGE_NAME := $(DOCKER_REGISTRY):$(GITCOMMIT)
 helm-e2e: helm container-runtime-build ## Runs helm e2e tests, you can use EXTRA_ARGS
 	@echo "+ $@"
-	RUNNING_TESTS=1 go test -parallel=1 "./test/helm/" -ginkgo.v -tags "$(BUILDTAGS) cgo" -v -timeout 60m -run "$(E2E_TEST_SELECTOR)" -image-name=$(IMAGE_NAME) $(E2E_TEST_ARGS)
+	RUNNING_TESTS=1 go test -parallel=1 "./test/helm/" -ginkgo.v -tags "$(BUILDTAGS) cgo" -v -timeout 60m -run "$(E2E_TEST_SELECTOR)" -image-name=$($(DOCKER_REGISTRY):$(GITCOMMIT)) $(E2E_TEST_ARGS)
 
 .PHONY: vet
 vet: ## Verifies `go vet` passes
