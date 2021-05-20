@@ -55,7 +55,10 @@ jobs:
         run: make container-runtime-build
 
       - name: Git status 2
-        run: git status
+        run: |
+          git status
+          git reset --hard
+          git status
 
       - name: Jenkins Operator - Helm Chart tests
         run: |
