@@ -1,6 +1,7 @@
 name: Publish nightly snapshot
 on:
-
+  schedule:
+    - cron: '*/30 * * * *'
 jobs:
   publish-image:
     name: Publish nightly snapshot
@@ -43,7 +44,10 @@ jobs:
 
       - name: Jenkins Operator - Helm Chart tests
         run: |
+          git reset --hard
+          make helm-lint
           eval $(bin/minikube docker-env)
+          make helm-e2e E2E_TEST_ARGS='-ginkgo.v'
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -53,4 +57,5 @@ jobs:
 
       - name: Release Container Runtime
         run: |
+          git reset --hard
           make container-runtime-snapshot-push
